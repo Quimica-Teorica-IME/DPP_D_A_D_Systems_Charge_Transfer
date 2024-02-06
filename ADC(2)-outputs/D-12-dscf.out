@@ -1,0 +1,300 @@
+
+   OpenMP run-time library returned nthreads = 36
+
+ dscf (cpu-8-44) : TURBOMOLE rev. V7.5.0 compiled 17 Jun 2020 at 09:15:30
+ Copyright (C) 2020 TURBOMOLE GmbH, Karlsruhe
+
+
+    2024-01-04 12:51:17.911 
+
+
+
+                             d s c f - program
+
+                   idea & directorship : reinhart ahlrichs
+                   program development : marco haeser
+                                         michael baer
+                           dft version : oliver treutler
+
+
+                          quantum chemistry group
+                          universitaet  karlsruhe
+                                  germany
+
+
+
+   *-----------------------------------------------------------------------*
+   |                     program will use 36 thread(s)                     |
+   *-----------------------------------------------------------------------*
+
+
+              +--------------------------------------------------+
+              | Atomic coordinate, charge and isotop information |
+              +--------------------------------------------------+
+
+                    atomic coordinates            atom    charge  isotop
+          2.29545732   -3.27640366    0.11022702    n      7.000     0
+         -0.39475679   -3.41699928   -0.03830545    c      6.000     0
+          3.18703011   -0.81163387   -0.03943928    c      6.000     0
+          1.12836247    0.77403532   -0.24976580    c      6.000     0
+         -1.12834847   -0.77402832   -0.24976580    c      6.000     0
+         -3.18701611    0.81164087   -0.03943928    c      6.000     0
+          0.39477079    3.41700628   -0.03830545    c      6.000     0
+         -2.29544332    3.27622168    0.11022702    n      7.000     0
+         -1.56997747   -5.40744781   -0.00636908    o      8.000     0
+          1.56999146    5.40745481   -0.00636908    o      8.000     0
+         -3.38468146    4.83505676   -0.07213155    h      1.000     0
+          3.38469546   -4.83504976   -0.07213155    h      1.000     0
+        -11.43151325   -2.64069979   -2.30389810    c      6.000     0
+         -9.69372110   -1.15386327   -0.97598755    c      6.000     0
+         -7.08193063   -1.41086603   -1.47449730    c      6.000     0
+         -6.16692524   -3.09347817   -3.28391007    c      6.000     0
+         -7.93476403   -4.55423646   -4.58649829    c      6.000     0
+        -10.53729484   -4.34145330   -4.10518504    c      6.000     0
+        -13.44388260   -2.46401039   -1.94220452    h      1.000     0
+         -4.16702808   -3.30852900   -3.64371392    h      1.000     0
+         -7.27128118   -5.89575304   -5.98980891    h      1.000     0
+        -11.85991416   -5.51365041   -5.14699105    h      1.000     0
+         -5.74683912    0.33448502    0.05712572    n      7.000     0
+         -7.52544935    1.66995448    1.54415121    c      6.000     0
+         -9.97547927    0.78745238    0.94038371    c      6.000     0
+         -7.12728405    3.47917827    3.42669637    c      6.000     0
+        -12.07231938    1.79033003    2.20083104    c      6.000     0
+         -9.24982444    4.45578873    4.65539630    c      6.000     0
+         -5.24757348    4.09069364    3.96281168    h      1.000     0
+        -11.69890949    3.63545862    4.04463682    c      6.000     0
+        -13.96374625    1.12798102    1.75882410    h      1.000     0
+         -8.98828634    5.86552442    6.12295761    h      1.000     0
+        -13.31027896    4.42989948    5.03466433    h      1.000     0
+         12.07233337   -1.79032303    2.20064206    c      6.000     0
+          9.97549327   -0.78744538    0.94038371    c      6.000     0
+          7.52546335   -1.66994748    1.54415121    c      6.000     0
+          7.12729805   -3.47917127    3.42688535    c      6.000     0
+          9.24983843   -4.45578173    4.65539630    c      6.000     0
+         11.69892349   -3.63545162    4.04463682    c      6.000     0
+         13.96376025   -1.12797402    1.75882410    h      1.000     0
+          5.24758747   -4.09068664    3.96281168    h      1.000     0
+          8.98830034   -5.86551742    6.12295761    h      1.000     0
+         13.31029296   -4.43008145    5.03466433    h      1.000     0
+          5.74685312   -0.33447802    0.05712572    n      7.000     0
+          7.08194462    1.41106200   -1.47449730    c      6.000     0
+          9.69373510    1.15387027   -0.97598755    c      6.000     0
+          6.16693923    3.09348517   -3.28391007    c      6.000     0
+         11.43152724    2.64070679   -2.30408707    c      6.000     0
+          7.93477802    4.55424346   -4.58649829    c      6.000     0
+          4.16685310    3.30853600   -3.64371392    h      1.000     0
+         10.53730884    4.34146030   -4.10518504    c      6.000     0
+         13.44389659    2.46401739   -1.94220452    h      1.000     0
+          7.27129518    5.89576004   -5.98961993    h      1.000     0
+         11.85973918    5.51365741   -5.14699105    h      1.000     0
+ 
+       center of nuclear mass  :    0.00000618    0.00000228   -0.00266336
+       center of nuclear charge:    0.00000544    0.00000194   -0.00221402
+
+   *************************************************************************
+   test	                                                                    
+   *************************************************************************
+
+
+
+              +--------------------------------------------------+
+              |               basis set information              |
+              +--------------------------------------------------+
+
+              we will work with the 1s 3p 5d 7f 9g ... basis set
+              ...i.e. with spherical basis functions...
+
+   type   atoms  prim   cont   basis
+   ---------------------------------------------------------------------------
+    n        4     46     31   def2-TZVP   [5s3p2d1f|11s6p2d1f]
+    c       30     46     31   def2-TZVP   [5s3p2d1f|11s6p2d1f]
+    o        2     46     31   def2-TZVP   [5s3p2d1f|11s6p2d1f]
+    h       18      8      6   def2-TZVP   [3s1p|5s1p]
+   ---------------------------------------------------------------------------
+   total:   54   1800   1224
+   ---------------------------------------------------------------------------
+
+   total number of primitive shells          :   66
+   total number of contracted shells         :  468
+   total number of cartesian basis functions : 1404
+   total number of SCF-basis functions       : 1224
+
+
+ integral neglect threshold       :  0.24E-11
+ integral storage threshold THIZE :  0.10E-04
+ integral storage threshold THIME :         5
+
+
+ DENSITY CONVERGENCE CHECK SWITCHED ON !
+ SCF CONVERGENCE IF RMS(delta[D]) <     0.1000000000E-07
+
+
+ symmetry group of the molecule :   c1 
+
+ the group has the following generators :
+   c1(z)
+
+    1 symmetry operations found
+
+ there are 1 real representations :   a   
+
+ maximum number of shells which are related by symmetry :  1
+
+
+          ------------------------
+          nuclear repulsion energy  :   3478.88587029    
+          ------------------------
+
+
+         -----------------
+         -S,T+V- integrals
+         -----------------
+
+ 1e-integrals will be neglected if expon. factor < 0.238031E-12
+ 
+   Difference densities algorithm switched on.
+   The maximal number of linear combinations of
+   difference densities is                    20 .
+
+ DIIS switched on: error vector is FDS-SDF
+ Max. Iterations for DIIS is     :   5
+ DIIS matrix (see manual) 
+    Scaling factor of diagonals  :  1.200
+    threshold for scaling factor :  0.000
+
+ scf convergence criterion : increment of total energy < .1000000D-06
+                  and increment of one-electron energy < .1000000D-03
+
+ MOs are in ASCII format !
+
+
+    mo occupation :
+   irrep   mo's   occupied
+    a     1224      121
+ 
+ number of basis functions   :  1224
+ number of occupied orbitals :   121
+ 
+
+ reading orbital data $scfmo  from file mos
+ orbital characterization : scfconv=7
+ mo-orthogonalization by Cholesky decomposition
+
+ automatic virtual orbital shift switched on 
+      shift if e(lumo)-e(homo) < 0.10000000    
+
+
+ DSCF restart information will be dumped onto file mos
+
+ 
+                                              current damping :  0.300
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   1  -1514.6081578579    -8979.8067369     3986.3127088    0.000D+00 0.237D-11
+          max. resid. norm for Fia-block=  2.274D-07 for orbital    118a         
+          max. resid. fock norm         =  4.014D-06 for orbital    384a         
+          Delta Eig. =     0.0000251199 eV 
+ 
+                                              current damping :  0.300
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   2  -1514.6081578657    -8979.8067329     3986.3127048    0.285D-07 0.151D-11
+          Norm of current diis error: 0.30960E-05
+          max. resid. norm for Fia-block=  1.864D-07 for orbital    121a         
+          max. resid. fock norm         =  7.920D-06 for orbital    385a         
+          Delta Eig. =     0.0000429564 eV 
+
+ ENERGY & DENSITY CONVERGED !
+
+ 
+                                              current damping :  0.350
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   3  -1514.6081578764    -8979.8067348     3986.3127066    0.473D-07 0.114D-11
+          max. resid. norm for Fia-block=  1.080D-07 for orbital    118a         
+          max. resid. fock norm         =  5.992D-06 for orbital    385a         
+
+ convergence criteria satisfied after     3 iterations
+
+
+   *************************************************************************
+   test	                                                                    
+   *************************************************************************
+
+
+                  ------------------------------------------ 
+                 |  total energy      =  -1514.60815787638  |
+                  ------------------------------------------ 
+                 :  kinetic energy    =   1512.07150072554  :
+                 :  potential energy  =  -3026.67965860192  :
+                 :  virial theorem    =      1.99832520567  :
+                 :  wavefunction norm =      1.00000000000  :
+                  .......................................... 
+
+
+ orbitals $scfmo  will be written to file mos
+
+    irrep                117a        118a        119a        120a        121a   
+ eigenvalues H         -0.32639    -0.31083    -0.29836    -0.29833    -0.27261
+            eV          -8.8816     -8.4582     -8.1189     -8.1181     -7.4183
+ occupation              2.0000      2.0000      2.0000      2.0000      2.0000
+
+    irrep                122a        123a        124a        125a        126a   
+ eigenvalues H          0.04331     0.07417     0.07424     0.11034     0.12125
+            eV           1.1786      2.0184      2.0202      3.0026      3.2995
+ 
+ 
+ 
+ 
+ ==============================================================================
+                           electrostatic moments
+ ==============================================================================
+
+ reference point for electrostatic moments:    0.00000   0.00000   0.00000
+
+ 
+              nuc           elec       ->  total
+ ------------------------------------------------------------------------------
+                          charge      
+ ------------------------------------------------------------------------------
+         242.000000    -242.000000      -0.000000
+ 
+ ------------------------------------------------------------------------------
+                       dipole moment  
+ ------------------------------------------------------------------------------
+   x       0.001316      -0.001178       0.000138
+   y       0.000469      -0.000209       0.000260
+   z      -0.535793       0.500437      -0.035356
+ 
+   | dipole moment | =     0.0354 a.u. =     0.0899 debye 
+ 
+ ------------------------------------------------------------------------------
+                     quadrupole moment
+ ------------------------------------------------------------------------------
+  xx   15224.941926  -15349.249362    -124.307436
+  yy    2465.007227   -2626.702210    -161.694983
+  zz    1703.049088   -1852.273873    -149.224784
+  xy       0.039741     -10.447156     -10.407415
+  xz      -0.015537       0.014880      -0.000657
+  yz      -0.006566       0.006107      -0.000458
+ 
+     1/3  trace=    -145.075734
+     anisotropy=      37.577217
+ 
+ ==============================================================================
+ 
+HOMO-LUMO Separation
+ HOMO         :   -0.27261489 H =     -7.41823 eV
+ LUMO         :    0.04331229 H =     +1.17859 eV
+ HOMO-LUMO gap:    0.31592718 H =     +8.59682 eV
+ 
+ ==============================================================================
+
+
+    ------------------------------------------------------------------------
+         total  cpu-time : 44 minutes and  0 seconds
+         total wall-time :  1 minutes and 17 seconds
+    ------------------------------------------------------------------------
+
+   ****  dscf : all done  ****
+
+
+    2024-01-04 12:52:35.017 
+
