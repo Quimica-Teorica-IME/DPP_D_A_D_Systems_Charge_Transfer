@@ -1,0 +1,777 @@
+ Compiled with: 
+ Intel(R) Fortran Intel(R) 64 Compiler for applications running on Intel(R) 64, 
+ Version 19.1.2.254 Build 20200623
+ Options used : 
+ -L /usr/lib/intel/ps-xe-2020/compilers_and_libraries_2020/linux/lib/intel64 -Xl
+ inker -rpath -Xlinker /usr/lib/intel/ps-xe-2020/compilers_and_libraries_2020/li
+ nux/lib/intel64 -L /usr/lib/intel/ps-xe-2020/compilers_and_libraries_2020/linux
+ /mkl/lib/intel64 -Xlinker -rpath -Xlinker /usr/lib/intel/ps-xe-2020/compilers_a
+ nd_libraries_2020/linux/mkl/lib/intel64 -O3 -march=core-avx2 -align array64byte
+  -fma -ftz -fomit-frame-pointer -assume byterecl -qno-openmp -traceback -c -o m
+ ain.o
+ Number of OpenMP Threads:           16
+ 
+          ****************************************
+          *                                      *
+          *              M R - C I               *
+          *        S.Grimme & M.Waletzke         *
+          *        Universitaet Muenster         *
+          *             1998-2000                *
+          *                                      *
+          *   Improved and MPI parallel Version  *
+          *          Code Maintenance            *
+          *          M. Kleinschmidt             *
+          *       Universitaet Duesseldorf       *
+          *             2000-                    *
+          *                                      *
+          *     Redesigned DFTCI Hamiltonian     *
+          *               R2016                  *
+          *             I. Lyskov                *
+          *       Universitaet Duesseldorf       *
+          *             2014-2016                *
+          *                                      *
+          *     Redesigned DFTCI Hamiltonians    *
+          *          R2017 and R2018             *
+          *   extension to Doublets & Quartets   *
+          *               A. Heil                *
+          *       Universitaet Duesseldorf       *
+          *             2015-2018                *
+          *                                      *
+          *     Redesigned DFTCI Hamiltonian     *
+          *               R2022                  *
+          *      D.R. Dombrowski & T. Schulz     *
+          *       Universitaet Duesseldorf       *
+          *             2019-2023                *
+          *                                      *
+          *       OpenMP Parallel Version        *
+          *             T. Schulz                *
+          *       Universitaet Duesseldorf       *
+          *             2019-2023                *
+          ****************************************
+                                                  
+           cite DFT/MRCI or MRCI work as:         
+             S.Grimme & M.Waletzke,               
+             J. Chem. Phys., 111, (1999), 5645    
+           cite MPI parallel CI as:               
+             M. Kleinschmidt, C. M. Marian,       
+             S.Grimme & M.Waletzke                
+             J. Chem. Phys., 130, (2009), 044708  
+           cite redesigned hamiltonian R2016 as:  
+             I.Lyskov, M.Kleinschmidt, C.M.Marian 
+             J. Chem. Phys. 144, 034104 (2016)    
+           cite redesigned hamiltonian R2017 as:  
+             A. Heil, C.M.Marian                  
+             J. Chem. Phys. 147, 194104 (2017)    
+           cite redesigned hamiltonian R2018 as:  
+             A. Heil, M.Kleinschmidt, C.M.Marian  
+             J. Chem. Phys.  149, 164106(2018)    
+           cite redesigned hamiltonian R2022 as:  
+             D.R.Dombrowski, T.Schulz,  M.Kleinschmidt, C.M.Marian
+             J. Phys. Chem. A 2023, 127, 8, 2011–2025
+           cite MR-MP2 work as:                   
+             S.Grimme & M.Waletzke,               
+             Phys. Chem. Chem. Phys.,             
+             2, (2000), 2075.                     
+           cite MR-MP/34 work as:                 
+             S.Grimme & M. Parac & M.Waletzke,    
+             Chem. Phys. Lett., 334 (2001), 99.   
+           cite MR-MPn work as:                   
+             S.Grimme & M. Parac & M.Waletzke     
+             unpublished.                         
+ 
+ 
+ current program limitations:
+ maximum # open shells          10
+           8 -tuple excitations rel. to HF/DFT determinant
+ 
+         input keywords: 
+ $end
+         end of input file
+ 
+ $orca
+        use ORCA input instead of Turbomole-style
+ $interface
+        convert ORCA input to Turbomole-style and exit
+ $method <string>
+         <string> may be one of the following options:
+         none
+         srmp2
+         dftci
+         refgen <string2>
+         mp2 <string2>
+         mp3 <string2>
+         mp4 <string2>
+         mp=<integer> <string2>
+         ci
+         <string2> selects a fockoperator for mrmp.
+         possible choices are:
+             g0 (recommended)
+             g1
+             g3
+ $hamiltonian <string>
+       <string> selects the dftci operator
+       possible choices are:
+          original (default if not specified) 
+            original parametrization by S. Grimme
+            singlet and triplet only!
+          R2016
+            redesigned hamiltonian by I. Lyskov
+            singlet, triplet and quintet!
+          R2017
+            redesigned hamiltonian by A. Heil 2017
+            singlet, doublet, triplet, quartet and quintet!
+          R2018
+            redesigned hamiltonian by A. Heil 2018
+            singlet, doublet, triplet, quartet and quintet!
+          R2022
+          redesigned hamiltonian by D. Dombrowski 2022
+            singlet, doublet, triplet, quartet and quintet!
+       see documentation for details of the hamiltonians
+ $dftparam <string>
+       specify parameters for dftci hamiltonian    
+       possible choices are:
+           standard (default) 
+             parameters optimized for 
+             standard selection ($esel=1.0)
+           short
+             parameters optimized for 
+             short selection ($esel=0.8)
+           manual
+            explicit specification of parameters
+            5 parameters c1-c5 (free-format floats)
+            are required in the next line!
+ $esel=<real>
+       Energy cut-off in H if $selector eps.
+       Selection threshold in muH if $selector mp2 ..
+       MP2 amplitude threshold if $method refgen ..
+       The default is $esel=1.
+ $esel  <string>
+       Alternative specification of energy cut-off
+       possible choices are:
+           standard
+             (equivalent to $esel=1.0)
+           short
+             (equivalent to $esel=0.8)
+ $selector <string>
+       Configuration selector type.
+    <string>=eps (default) an orbital energy gap type
+       selection as described in the JCP paper is
+       used. The cutoff is $esel H above the highest
+       root in the reference space.
+    <string>=eps ground, similar but cutoff is 
+       applied above the ground state
+       Full MR-SD spaces should be generated
+       with <string>=eps and $esel=<big number>.
+    <string>=mp2 g0, mp2 g1 or mp2 g3
+       the old MRDCI type selector
+       with MP2 diagonal elements instead of Epstein-
+       Nesbet is used.
+ $roots <integer(s)> 
+       # of roots in irreps n1 n2 n3 ... n8
+ $mul=<integer>
+       Multiplicity (s=1, d=2, t=3, q=4...). Default=1
+ $ciref <integer1> <integer3> <integer3>
+       Do a CI reference space with <integer1> e- in
+       in <integer2> orbitals and a maximum <integer3>
+       excitations. If the next card does not
+       contain a set of <integer2> mo numbers, the
+       frontier orbitals are taken.
+ $nref=<integer>
+      # of reference configurations. The
+       configurations follow on next nn cards.
+       Must be the final input statement !!
+       Optional statement (not needed with $ciref)
+ $freeze <core energy thresh> <anticore energy thresh>
+       Freezes occupied and virtual electrons, in a.u.
+       Default: -3.0,  2.0
+       Needs ORCA input
+ $efreeze
+  <orb1>,<orb2>-<orb5>,...
+       Freezes orbitals explicitly. Separate orbitals
+       by comma or more than one with dash
+       For core and anticore orbitals. ORCA inp. req.
+ $charge=<integer>
+       Add or remove electrons from the base
+       determinant occupation.
+ $confinput <string>
+       If <string>=mrdci: mrdci input (recommended).
+       If <string>=occ: occupation number input style.
+ $lshift=<real>
+       Level shift in MR-MP2 in au.
+ $startvector <string>
+       Startvector for davidson.
+       if <string>=previous, the converged vector
+       from a previous (e.g. mp2) run is taken.
+       Default (i.e. no input) is a mren2 procedure.
+ $memint=<integer>
+       Use memory (in Mb) for precalculated
+       four-index integrals (default=256 Mb).
+ $memvec=<integer>
+       Use memory (in Mb) for vectors 
+       (default=30000 Mb).
+ $dmat
+       <string>
+       Calculate all densities and the t-densities
+       between the reference state and all other
+       states. The reference state is specified 
+       by <string> (e.g. 1a1, 2b2u). The default
+       (i.e. if <string> is missing) is the first 
+       totally symmetric state.
+ $nos 
+       Calculate average natural orbitals which
+       are written to file <nos>.
+ $direct
+       Direct calculation of H*c in CI.
+       (default for #csf > 50000).
+ $maxsafdisk=<integer>
+       in CI: direct calculation if
+       #SAF .gt. <integer>, otherwise disk
+       (default:       200000 )
+ $acthr=<real>
+       Discard high-lying mos with eps > <real>
+       (default=10.0/2.0 H).
+ $sthr=<real>
+       Print threshhold for important configurations.
+ $rthr=<real>
+       Select those reference configurations from the
+       reference space which have a sum of weigths
+       over all roots > <real>.
+ $ncore=<integer>
+       # of mos which are not specified in occ.number
+       input.
+ $prec=<real>
+       Overall numerical precision (default=1).
+       0.1 means higher, 10 lower precision.
+ $print
+       Print results from previous calculation.
+ $mergerefsp <integer(s)> <stop>
+       read the referemce spaces of calculations,
+       done for other multiplicities,
+       and ensure, that in all calculations,
+       MO-odering and internal/external separation
+       are consistent.
+       if "stop" is given as last argument:
+       stop after generating mosort info for merge
+ $soselect <string1> [, <string2>, ...]
+       additional selection of single excitations 
+       <string> = off : no additional singles
+                        (default)
+       <string> = all : automatic selection of all
+                        single excitations
+       <string> = same: automatic selection of
+                        single excitations with same
+                        symmetry as the reference
+       <string> = hso : automatic selection of
+                        single excitations connected
+                        by H_SO to a reference
+       <string> = dipol:automatic selection of
+                        single excitations connected
+                        by a dipole (x,y,z-)operator
+       <string> = int : single excitations into
+                        internal orbitals only
+                        (default)
+       <string> = ext : single excitations into
+                        all (internal and external)
+                        orbitals
+ $hfcis
+        select all single excitations wrt. hf ref
+        (implemented only for eps selector)
+ $debugref [<int1> <int2> ...]
+          reference CI vectors are printed.
+          int1, int2, ... are the number of roots
+          to be printed  (may be omitted -
+          default: same as $roots)
+ $phaser  WF phase will be adjusted: 
+          largest coefficient is set positive.
+          if 2 ore more coeffs. are within THRESH,
+          the first one is chosen.
+          THRESH may be given in the next line.
+          default:   1.000000000000000E-005
+ $stateshift <directory>
+          energy shift of individual states in CI
+          shift is given in next lines as:
+          <root> <sym> <shift> <unit>
+          e.g.:
+          2 b1g 0.40 ev
+ $shiftthresh=<real>
+          threshold for discarding CI coefficients
+          projection operator of state shift
+          small values yield huge computation times!
+          default:  1.000000000000000E-004
+ $threadstat
+          print more information about thread timings.
+ 
+ 
+ running on n03                                                             
+ 
+  ------------- INPUT (standard io) -------------------
+  the run will be performed with the following options:
+  -----------------------------------------------------
+ opt dmat direct pronly cfinpocc lnos auto imethod
+ F T F F F F F          42
+ imul imethod iorder ifockop istartvec nspref ncore
+           1          42           0           0           0          30
+           0
+ memijkl ilowdir ilowdnr iseltype icharge
+         256           1           1           0           0
+ tsel acthr sthr rsel accfac lshift
+   1.00   2.00   0.00  -1.00   1.00   0.00
+  -----------------------------------------------------
+  -----------------------------------------------------
+ loading dftparams R2018 standard
+ c1-c5 :   0.558411   0.508918   0.362362   4.471650   0.000000
+ =====================================================
+ title: 
+ DFT/MRCI run with ORCA integral input                                          
+  
+ =====================================================
+ 
+          ******************************************
+          *            integral read               *
+          ******************************************
+
+ naux              2382
+ nmo                952
+ loading binary eta array from file
+ /sw/cluster/pub/apps/mrci/2023.06/kscihome/etafeldb.singlet                    
+  
+ bijk needs                   4322  Mb
+         952
+      453628         952
+ 
+ loading RI-integrals from ORCA file orca.bkji
+ read ORCA  : done         952         103         849         206
+ 
+ read bkji  : done
+ 
+ mrdci style configuration input !
+ mergerefsp =  F
+ 
+          ******************************************
+          *         properties of MOs and          *
+          *            base determinant            *
+          ******************************************
+
+  lowest external mo          :         107
+  anti-core neglect threshold :   2.00000000000000     
+
+ typ nr (CI/TM) irrep   occ            <i|KS|i> (au/eV)
+ D int   1   1   a      2.0    -90.10097    -2451.77
+ D int   2   2   a      2.0    -90.10096    -2451.77
+ D int   3   3   a      2.0    -19.65113     -534.73
+ D int   4   4   a      2.0    -19.65111     -534.73
+ D int   5   5   a      2.0    -14.84626     -403.99
+ D int   6   6   a      2.0    -14.84625     -403.99
+ D int   7   7   a      2.0    -10.70305     -291.24
+ D int   8   8   a      2.0    -10.70303     -291.24
+ D int   9   9   a      2.0    -10.67379     -290.45
+ D int  10  10   a      2.0    -10.67375     -290.45
+ D int  11  11   a      2.0    -10.64123     -289.56
+ D int  12  12   a      2.0    -10.64120     -289.56
+ D int  13  13   a      2.0    -10.63490     -289.39
+ D int  14  14   a      2.0    -10.63485     -289.39
+ D int  15  15   a      2.0    -10.62394     -289.09
+ D int  16  16   a      2.0    -10.62389     -289.09
+ D int  17  17   a      2.0    -10.61646     -288.89
+ D int  18  18   a      2.0    -10.61644     -288.89
+ D int  19  19   a      2.0    -10.60899     -288.69
+ D int  20  20   a      2.0    -10.60897     -288.68
+ D int  21  21   a      2.0    -10.60824     -288.67
+ D int  22  22   a      2.0    -10.60819     -288.66
+ D int  23  23   a      2.0    -10.60709     -288.63
+ D int  24  24   a      2.0    -10.60704     -288.63
+ D int  25  25   a      2.0    -10.60329     -288.53
+ D int  26  26   a      2.0    -10.60326     -288.53
+ D int  27  27   a      2.0    -10.58888     -288.14
+ D int  28  28   a      2.0    -10.58822     -288.12
+ D int  29  29   a      2.0     -8.38035     -228.04
+ D int  30  30   a      2.0     -8.38033     -228.04
+ D int  31  31   a      2.0     -6.23693     -169.72
+ D int  32  32   a      2.0     -6.23692     -169.72
+ D int  33  33   a      2.0     -6.23436     -169.65
+ D int  34  34   a      2.0     -6.23434     -169.65
+ D int  35  35   a      2.0     -6.23345     -169.62
+ D int  36  36   a      2.0     -6.23343     -169.62
+ D int  37  37   a      2.0     -1.17910      -32.08
+ D int  38  38   a      2.0     -1.17353      -31.93
+ D int  39  39   a      2.0     -1.10134      -29.97
+ D int  40  40   a      2.0     -1.08665      -29.57
+ D int  41  41   a      2.0     -1.02797      -27.97
+ D int  42  42   a      2.0     -1.02731      -27.95
+ D int  43  43   a      2.0     -0.96144      -26.16
+ D int  44  44   a      2.0     -0.96131      -26.16
+ D int  45  45   a      2.0     -0.92115      -25.07
+ D int  46  46   a      2.0     -0.90617      -24.66
+ D int  47  47   a      2.0     -0.90251      -24.56
+ D int  48  48   a      2.0     -0.86954      -23.66
+ D int  49  49   a      2.0     -0.85685      -23.32
+ D int  50  50   a      2.0     -0.85360      -23.23
+ D int  51  51   a      2.0     -0.84828      -23.08
+ D int  52  52   a      2.0     -0.80019      -21.77
+ D int  53  53   a      2.0     -0.77100      -20.98
+ D int  54  54   a      2.0     -0.76909      -20.93
+ D int  55  55   a      2.0     -0.72570      -19.75
+ D int  56  56   a      2.0     -0.72562      -19.75
+ D int  57  57   a      2.0     -0.70095      -19.07
+ D int  58  58   a      2.0     -0.68549      -18.65
+ D int  59  59   a      2.0     -0.68317      -18.59
+ D int  60  60   a      2.0     -0.67295      -18.31
+ D int  61  61   a      2.0     -0.64462      -17.54
+ D int  62  62   a      2.0     -0.62392      -16.98
+ D int  63  63   a      2.0     -0.61958      -16.86
+ D int  64  64   a      2.0     -0.61405      -16.71
+ D int  65  65   a      2.0     -0.57974      -15.78
+ D int  66  66   a      2.0     -0.57607      -15.68
+ D int  67  67   a      2.0     -0.56260      -15.31
+ D int  68  68   a      2.0     -0.55378      -15.07
+ D int  69  69   a      2.0     -0.55296      -15.05
+ D int  70  70   a      2.0     -0.53872      -14.66
+ D int  71  71   a      2.0     -0.53620      -14.59
+ D int  72  72   a      2.0     -0.53241      -14.49
+ D int  73  73   a      2.0     -0.52065      -14.17
+ D int  74  74   a      2.0     -0.51886      -14.12
+ D int  75  75   a      2.0     -0.51459      -14.00
+ D int  76  76   a      2.0     -0.50446      -13.73
+ D int  77  77   a      2.0     -0.50197      -13.66
+ D int  78  78   a      2.0     -0.49446      -13.46
+ D int  79  79   a      2.0     -0.49024      -13.34
+ D int  80  80   a      2.0     -0.48764      -13.27
+ D int  81  81   a      2.0     -0.48189      -13.11
+ D int  82  82   a      2.0     -0.47933      -13.04
+ D int  83  83   a      2.0     -0.46548      -12.67
+ D int  84  84   a      2.0     -0.44358      -12.07
+ D int  85  85   a      2.0     -0.44114      -12.00
+ D int  86  86   a      2.0     -0.42618      -11.60
+ D int  87  87   a      2.0     -0.42505      -11.57
+ D int  88  88   a      2.0     -0.42267      -11.50
+ D int  89  89   a      2.0     -0.41616      -11.32
+ D int  90  90   a      2.0     -0.41376      -11.26
+ D int  91  91   a      2.0     -0.40993      -11.15
+ D int  92  92   a      2.0     -0.39645      -10.79
+ D int  93  93   a      2.0     -0.39521      -10.75
+ D int  94  94   a      2.0     -0.34686       -9.44
+ D int  95  95   a      2.0     -0.34650       -9.43
+ D int  96  96   a      2.0     -0.34502       -9.39
+ D int  97  97   a      2.0     -0.32952       -8.97
+ D int  98  98   a      2.0     -0.32207       -8.76
+ D int  99  99   a      2.0     -0.30169       -8.21
+ D int 100 100   a      2.0     -0.30140       -8.20
+ V int 101 101   a      2.0     -0.28128       -7.65
+ V int 102 102   a      2.0     -0.26387       -7.18
+ V int 103 103   a      2.0     -0.21272       -5.79
+ V int 104 104   a      0.0     -0.07846       -2.14
+ V int 105 105   a      0.0     -0.04446       -1.21
+ V int 106 106   a      0.0     -0.01426       -0.39
+   ext 107 107   a      0.0      0.02239        0.61
+   ext 108 108   a      0.0      0.04390        1.19
+   ext 109 109   a      0.0      0.04409        1.20
+   ext 110 110   a      0.0      0.06080        1.65
+   ext 111 111   a      0.0      0.06127        1.67
+   ext 112 112   a      0.0      0.06291        1.71
+   ext 113 113   a      0.0      0.06775        1.84
+   ext 114 114   a      0.0      0.07201        1.96
+   ext 115 115   a      0.0      0.07527        2.05
+   ext 116 116   a      0.0      0.08223        2.24
+   ext 117 117   a      0.0      0.08417        2.29
+   ext 118 118   a      0.0      0.09371        2.55
+   ext 119 119   a      0.0      0.09807        2.67
+   ext 120 120   a      0.0      0.11317        3.08
+   ext 121 121   a      0.0      0.11767        3.20
+   ext 122 122   a      0.0      0.12039        3.28
+   ext 123 123   a      0.0      0.12104        3.29
+   ext 124 124   a      0.0      0.13113        3.57
+   ext 125 125   a      0.0      0.13400        3.65
+   ext 126 126   a      0.0      0.13598        3.70
+   ext 127 127   a      0.0      0.14226        3.87
+   ext 128 128   a      0.0      0.14779        4.02
+   ext 129 129   a      0.0      0.15233        4.15
+   ext 130 130   a      0.0      0.15356        4.18
+   ext 131 131   a      0.0      0.16471        4.48
+   ext 132 132   a      0.0      0.17038        4.64
+   ext 133 133   a      0.0      0.17535        4.77
+   ext 134 134   a      0.0      0.18119        4.93
+   ext 135 135   a      0.0      0.18356        4.99
+   ext 136 136   a      0.0      0.19176        5.22
+   ext 137 137   a      0.0      0.19465        5.30
+   ext 138 138   a      0.0      0.19473        5.30
+   ext 139 139   a      0.0      0.19782        5.38
+   ext 140 140   a      0.0      0.20436        5.56
+   ext 141 141   a      0.0      0.20958        5.70
+   ext 142 142   a      0.0      0.21443        5.83
+   ext 143 143   a      0.0      0.22324        6.07
+   ext 144 144   a      0.0      0.22899        6.23
+   ext 145 145   a      0.0      0.23030        6.27
+   ext 146 146   a      0.0      0.23116        6.29
+   ext 147 147   a      0.0      0.23594        6.42
+   ext 148 148   a      0.0      0.24048        6.54
+   ext 149 149   a      0.0      0.24664        6.71
+   ext 150 150   a      0.0      0.25195        6.86
+   ext 151 151   a      0.0      0.25912        7.05
+   ext 152 152   a      0.0      0.26184        7.12
+   ext 153 153   a      0.0      0.26644        7.25
+   ext 154 154   a      0.0      0.26949        7.33
+   ext 155 155   a      0.0      0.27176        7.39
+   ext 156 156   a      0.0      0.27925        7.60
+   ext 157 157   a      0.0      0.28240        7.68
+   ext 158 158   a      0.0      0.28322        7.71
+   ext 159 159   a      0.0      0.28786        7.83
+   ext 160 160   a      0.0      0.28890        7.86
+   ext 161 161   a      0.0      0.29156        7.93
+   ext 162 162   a      0.0      0.29661        8.07
+   ext 163 163   a      0.0      0.29800        8.11
+   ext 164 164   a      0.0      0.30862        8.40
+   ext 165 165   a      0.0      0.31443        8.56
+   ext 166 166   a      0.0      0.31593        8.60
+   ext 167 167   a      0.0      0.31788        8.65
+   ext 168 168   a      0.0      0.31947        8.69
+   ext 169 169   a      0.0      0.32352        8.80
+   ext 170 170   a      0.0      0.32616        8.88
+   ext 171 171   a      0.0      0.32977        8.97
+   ext 172 172   a      0.0      0.33893        9.22
+   ext 173 173   a      0.0      0.34115        9.28
+   ext 174 174   a      0.0      0.34634        9.42
+   ext 175 175   a      0.0      0.34791        9.47
+   ext 176 176   a      0.0      0.35022        9.53
+   ext 177 177   a      0.0      0.35260        9.59
+   ext 178 178   a      0.0      0.35545        9.67
+   ext 179 179   a      0.0      0.36049        9.81
+   ext 180 180   a      0.0      0.36546        9.94
+   ext 181 181   a      0.0      0.36608        9.96
+   ext 182 182   a      0.0      0.37547       10.22
+   ext 183 183   a      0.0      0.37615       10.24
+   ext 184 184   a      0.0      0.38491       10.47
+   ext 185 185   a      0.0      0.38582       10.50
+   ext 186 186   a      0.0      0.38962       10.60
+   ext 187 187   a      0.0      0.39010       10.62
+   ext 188 188   a      0.0      0.39117       10.64
+   ext 189 189   a      0.0      0.39445       10.73
+   ext 190 190   a      0.0      0.40315       10.97
+   ext 191 191   a      0.0      0.40980       11.15
+   ext 192 192   a      0.0      0.41548       11.31
+   ext 193 193   a      0.0      0.41690       11.34
+   ext 194 194   a      0.0      0.42309       11.51
+   ext 195 195   a      0.0      0.42446       11.55
+   ext 196 196   a      0.0      0.42819       11.65
+   ext 197 197   a      0.0      0.43619       11.87
+   ext 198 198   a      0.0      0.43630       11.87
+   ext 199 199   a      0.0      0.44147       12.01
+   ext 200 200   a      0.0      0.44218       12.03
+   ext 201 201   a      0.0      0.44440       12.09
+   ext 202 202   a      0.0      0.45195       12.30
+   ext 203 203   a      0.0      0.45363       12.34
+   ext 204 204   a      0.0      0.45615       12.41
+   ext 205 205   a      0.0      0.45971       12.51
+   ext 206 206   a      0.0      0.46137       12.55
+   ext 207 207   a      0.0      0.46177       12.57
+   ext 208 208   a      0.0      0.46581       12.68
+   ext 209 209   a      0.0      0.47023       12.80
+   ext 210 210   a      0.0      0.47720       12.99
+   ext 211 211   a      0.0      0.47914       13.04
+   ext 212 212   a      0.0      0.48351       13.16
+   ext 213 213   a      0.0      0.48951       13.32
+   ext 214 214   a      0.0      0.49399       13.44
+   ext 215 215   a      0.0      0.49861       13.57
+   ext 216 216   a      0.0      0.50106       13.63
+   ext 217 217   a      0.0      0.50130       13.64
+   ext 218 218   a      0.0      0.51108       13.91
+   ext 219 219   a      0.0      0.51864       14.11
+   ext 220 220   a      0.0      0.52179       14.20
+   ext 221 221   a      0.0      0.52311       14.23
+   ext 222 222   a      0.0      0.52869       14.39
+   ext 223 223   a      0.0      0.52885       14.39
+   ext 224 224   a      0.0      0.53949       14.68
+   ext 225 225   a      0.0      0.54206       14.75
+   ext 226 226   a      0.0      0.54541       14.84
+   ext 227 227   a      0.0      0.54741       14.90
+   ext 228 228   a      0.0      0.55128       15.00
+   ext 229 229   a      0.0      0.55629       15.14
+   ext 230 230   a      0.0      0.56418       15.35
+   ext 231 231   a      0.0      0.56680       15.42
+   ext 232 232   a      0.0      0.56999       15.51
+   ext 233 233   a      0.0      0.57064       15.53
+   ext 234 234   a      0.0      0.57352       15.61
+   ext 235 235   a      0.0      0.58889       16.02
+   ext 236 236   a      0.0      0.59048       16.07
+   ext 237 237   a      0.0      0.59944       16.31
+   ext 238 238   a      0.0      0.60090       16.35
+   ext 239 239   a      0.0      0.60569       16.48
+   ext 240 240   a      0.0      0.61259       16.67
+   ext 241 241   a      0.0      0.61675       16.78
+   ext 242 242   a      0.0      0.62867       17.11
+   ext 243 243   a      0.0      0.63863       17.38
+   ext 244 244   a      0.0      0.64176       17.46
+   ext 245 245   a      0.0      0.64782       17.63
+   ext 246 246   a      0.0      0.65297       17.77
+   ext 247 247   a      0.0      0.65884       17.93
+   ext 248 248   a      0.0      0.66701       18.15
+   ext 249 249   a      0.0      0.66702       18.15
+   ext 250 250   a      0.0      0.66906       18.21
+   ext 251 251   a      0.0      0.67761       18.44
+   ext 252 252   a      0.0      0.67808       18.45
+   ext 253 253   a      0.0      0.68306       18.59
+   ext 254 254   a      0.0      0.68730       18.70
+   ext 255 255   a      0.0      0.69055       18.79
+   ext 256 256   a      0.0      0.69327       18.86
+   ext 257 257   a      0.0      0.69573       18.93
+   ext 258 258   a      0.0      0.69762       18.98
+   ext 259 259   a      0.0      0.70678       19.23
+   ext 260 260   a      0.0      0.71065       19.34
+   ext 261 261   a      0.0      0.71245       19.39
+   ext 262 262   a      0.0      0.71490       19.45
+   ext 263 263   a      0.0      0.72035       19.60
+   ext 264 264   a      0.0      0.72050       19.61
+   ext 265 265   a      0.0      0.72321       19.68
+   ext 266 266   a      0.0      0.73003       19.87
+   ext 267 267   a      0.0      0.73442       19.98
+   ext 268 268   a      0.0      0.74393       20.24
+   ext 269 269   a      0.0      0.74825       20.36
+   ext 270 270   a      0.0      0.75279       20.48
+   ext 271 271   a      0.0      0.76084       20.70
+   ext 272 272   a      0.0      0.76236       20.74
+   ext 273 273   a      0.0      0.76391       20.79
+   ext 274 274   a      0.0      0.76955       20.94
+   ext 275 275   a      0.0      0.77514       21.09
+   ext 276 276   a      0.0      0.77640       21.13
+   ext 277 277   a      0.0      0.77976       21.22
+   ext 278 278   a      0.0      0.78615       21.39
+   ext 279 279   a      0.0      0.78678       21.41
+   ext 280 280   a      0.0      0.79557       21.65
+   ext 281 281   a      0.0      0.79851       21.73
+   ext 282 282   a      0.0      0.80332       21.86
+   ext 283 283   a      0.0      0.80862       22.00
+   ext 284 284   a      0.0      0.81616       22.21
+   ext 285 285   a      0.0      0.81740       22.24
+   ext 286 286   a      0.0      0.82602       22.48
+   ext 287 287   a      0.0      0.83379       22.69
+   ext 288 288   a      0.0      0.84084       22.88
+   ext 289 289   a      0.0      0.85093       23.16
+   ext 290 290   a      0.0      0.85701       23.32
+   ext 291 291   a      0.0      0.86207       23.46
+   ext 292 292   a      0.0      0.86563       23.55
+   ext 293 293   a      0.0      0.87077       23.69
+   ext 294 294   a      0.0      0.87437       23.79
+   ext 295 295   a      0.0      0.88274       24.02
+   ext 296 296   a      0.0      0.88774       24.16
+   ext 297 297   a      0.0      0.89048       24.23
+   ext 298 298   a      0.0      0.89557       24.37
+   ext 299 299   a      0.0      0.89588       24.38
+   ext 300 300   a      0.0      0.89869       24.45
+   ext 301 301   a      0.0      0.90272       24.56
+   ext 302 302   a      0.0      0.91633       24.93
+   ext 303 303   a      0.0      0.91790       24.98
+   ext 304 304   a      0.0      0.92906       25.28
+   ext 305 305   a      0.0      0.93287       25.38
+   ext 306 306   a      0.0      0.94114       25.61
+   ext 307 307   a      0.0      0.95002       25.85
+   ext 308 308   a      0.0      0.95842       26.08
+   ext 309 309   a      0.0      0.95936       26.11
+   ext 310 310   a      0.0      0.96329       26.21
+   ext 311 311   a      0.0      0.96771       26.33
+   ext 312 312   a      0.0      0.98940       26.92
+   ext 313 313   a      0.0      0.99538       27.09
+         .
+         .
+         .
+frozen 942 942   a      0.0     23.50313      639.55
+frozen 943 943   a      0.0     23.73093      645.75
+frozen 944 944   a      0.0     23.83491      648.58
+frozen 945 945   a      0.0     23.88331      649.90
+frozen 946 946   a      0.0     23.90640      650.53
+frozen 947 947   a      0.0     23.94736      651.64
+frozen 948 948   a      0.0     24.17398      657.81
+frozen 949 949   a      0.0     32.88636      894.88
+frozen 950 950   a      0.0     32.94831      896.57
+frozen 951 951   a      0.0     44.54183     1212.05
+frozen 952 952   a      0.0     44.55199     1212.32
+ 
+ sorting bijk ....
+ total (read)    energy =   -1901.65572281980     
+
+
+          ******************************************
+          *        reference configurations        *
+          ******************************************
+
+ref   1:  0   1-103 
+ref   2:  0   1-102,104 
+ref   3:  4 102 103 104 105   1-101 
+ref   4:  4 101 103 104 106   1-100,102 
+ref   5:  4 101 102 105 106   1-100,103 
+ref   6:  0   1-102,105 
+ref   7:  0   1-101,103,105 
+ref   8:  0   1-101,103-104 
+ref   9:  4 101 102 104 105   1-100,103 
+ref  10:  2 103 105   1-102 
+ref  11:  2 104 106   1-102 
+ref  12:  4 102 103 105 106   1-101 
+ref  13:  0   1-100,102-104 
+ref  14:  0   1-102,106 
+ref  15:  2 103 104   1-102 
+ref  16:  2 104 105   1-102 
+ref  17:  2 102 105   1-101,103 
+ref  18:  2 101 104   1-100,102-103 
+ref  19:  2 101 102   1-100,103-104 
+ref  20:  4 102 103 104 106   1-101 
+ref  21:  2 102 103   1-101,104 
+ref  22:  2 103 106   1-102 
+ref  23:  2 102 103   1-101,105 
+ref  24:  4 101 103 105 106   1-100,102 
+ref  25:  2 102 104   1-101,103 
+ref  26:  2 101 103   1-100,102,104 
+ref  27:  2 101 105   1-100,102-103 
+ref  28:  2 102 106   1-101,103 
+ref  29:  2 101 103   1-100,102,105 
+ref  30:  2 104 106   1-101,103 
+ 
+          ******************************************
+          *         (T) D E N S I T I E S          *
+          ******************************************
+
+ writing binary file <mrci.cidens>
+ 
+ Processing <a   |a   > ...
+ nr,imemhave          11       29945
+ nrsame,imemneed           1          55         311     7223452
+ nrsame,imemneed           1          55
+ nrsame,imemneed           2         110         311     7223452
+ nrsame,imemneed           2         111
+ nrsame,imemneed           3         165         311     7223452
+ nrsame,imemneed           3         167
+ nrsame,imemneed           4         220         311     7223452
+ nrsame,imemneed           4         222
+ nrsame,imemneed           5         275         311     7223452
+ nrsame,imemneed           5         278
+ nrsame,imemneed           6         330         311     7223452
+ nrsame,imemneed           6         334
+ nrsame,imemneed           7         385         311     7223452
+ nrsame,imemneed           7         390
+ nrsame,imemneed           8         440         311     7223452
+ nrsame,imemneed           8         445
+ nrsame,imemneed           9         495         311     7223452
+ nrsame,imemneed           9         501
+ nrsame,imemneed          10         550         311     7223452
+ nrsame,imemneed          10         557
+ nrsame,imemneed          11         605         311     7223452
+ nrsame,imemneed          11         613
+   root  1(a   ) * root  1(a   )
+   root  2(a   ) * root  2(a   )
+   root  3(a   ) * root  3(a   )
+   root  4(a   ) * root  4(a   )
+   root  5(a   ) * root  5(a   )
+   root  6(a   ) * root  6(a   )
+   root  7(a   ) * root  7(a   )
+   root  8(a   ) * root  8(a   )
+   root  9(a   ) * root  9(a   )
+   root 10(a   ) * root 10(a   )
+   root 11(a   ) * root 11(a   )
+   root  1(a   ) * root  2(a   )
+   root  1(a   ) * root  3(a   )
+   root  1(a   ) * root  4(a   )
+   root  1(a   ) * root  5(a   )
+   root  1(a   ) * root  6(a   )
+   root  1(a   ) * root  7(a   )
+   root  1(a   ) * root  8(a   )
+   root  1(a   ) * root  9(a   )
+   root  1(a   ) * root 10(a   )
+   root  1(a   ) * root 11(a   )
+... finished in   119.323 s
